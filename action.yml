@@ -1,6 +1,9 @@
 name: 'Code scanning alerts'
 description: 'Code scanning alerts from Github'
 inputs:
+  token: 
+    description: 'Github repository token'
+    required: true
   repo: 
     description: 'Github repository as owner/repo'
     required: true
