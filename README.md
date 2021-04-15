@@ -1,2 +1,21 @@
 # codescanalerts-action
-Github action that scan vulnerabilities and stores output in json file
+
+[![units-test](https://github.com/MTES-MCT/codescanalerts-action/actions/workflows/test.yml/badge.svg)](https://github.com/MTES-MCT/codescanalerts-action/actions/workflows/test.yml)
+
+Github action that fetches Github code-scanning alerts and report results as JSON.
+
+## Usage
+
+First, you need to store your repository read-only token in repo secrets as `CODESCANALERTS_TOKEN`.
+
+```yaml
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: "MTES-MCT/codescanalerts-action@main"
+        with:
+          token: ${{ secrets.CODESCANALERTS_TOKEN }}
+          repo: MTES-MCT/dashlord
+          output: codescanalerts.json
+```

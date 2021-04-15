@@ -1,0 +1,13 @@
+name: 'Code scanning alerts'
+description: 'Code scanning alerts from Github'
+inputs:
+  repo: 
+    description: 'Github repository as owner/repo'
+    required: true
+  output:
+    description: 'Path to output file. defaults to codescanalerts.json'
+    default: 'codescanalerts.json'
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
