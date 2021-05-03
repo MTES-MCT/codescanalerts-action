@@ -3422,24 +3422,24 @@ const throwsNon200 = (response) => {
 const getOwner = (repoUrl) => {
   const args = repoUrl.split('/');
   return args.length > 0 ? args[0] : '';
-} 
+}
 
 const getRepo = (repoUrl) => {
   const args = repoUrl.split('/');
   return args.length > 1 ? args[1] : '';
-  
-} 
+
+}
 
 /**
  * Returns alerts from Github code-scanning associated to a repo url
  *
- * @param {string} repo The repository url as owner/repo
+ * @param {string} repoUrl The repository url as owner/repo
  * @param {string} token The token to authenticate to Github API
  *
  * @returns {Promise<HttpScanResult>}
  */
 const alerts = (repoUrl, token) => {
-  console.warn(`fetch Gihub code scanning alerts for ${repoUrl}`);
+  console.warn(`fetch Github code scanning alerts for ${repoUrl}`);
   const octokit = new Octokit({ auth: token });
   return octokit.request('GET /repos/{owner}/{repo}/code-scanning/alerts', {
     owner: getOwner(repoUrl),
@@ -3571,13 +3571,18 @@ const alerts = __nccwpck_require__(341);
 
 async function run() {
   try {
-    const repo = core.getInput("repo");
+    const repositoriesString = core.getInput("repositories");
+    const repositories = repositoriesString.split(',');
+    core.info(`Repositories JSON as ${JSON.stringify(repositories)} ...`);
     const token = core.getInput("token");
     core.setSecret(token);
     const output = core.getInput("output");
-    core.info(`Fetching code scanning alerts from Github on ${repo} ...`);
-    const results = await alerts(repo, token);
-    fs.writeFileSync(output, JSON.stringify(results));
+    var allResults = [];
+    await Promise.all(repositories.map(async (repo) => {
+      var results = await alerts(repo, token);
+      allResults.push(results.data);
+    }));
+    fs.writeFileSync(output, JSON.stringify(allResults));
   } catch (error) {
     core.setFailed(error.message);
   }

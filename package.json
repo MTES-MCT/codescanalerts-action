@@ -1,7 +1,7 @@
 {
   "name": "codescanalerts-action",
-  "version": "1.0.0",
-  "description": "Github action that scan vulnerabilities and stores output in json file",
+  "version": "0.1.0",
+  "description": "Github action that scan code quality and stores output in json file",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",

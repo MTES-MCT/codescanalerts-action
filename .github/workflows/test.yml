@@ -21,12 +21,19 @@ jobs:
     name: Test GH Action
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Run on MTES-MCT/camino-api
-      uses: ./
-      with:
-        token: ${{ secrets.CODESCANALERTS_TOKEN }}
-        repo: MTES-MCT/camino-api
-        output: codescanalerts.json
-    - run: |
-        cat codescanalerts.json
+      - name: Checkout Locally
+        uses: actions/checkout@v2
+        if: ${{ env.ACT }}
+        with:
+          path: "codescanalerts-action"
+      - name: Checkout Github
+        uses: actions/checkout@v2
+        if: ${{ !env.ACT }}
+      - name: on MTES-MCT/action-bidonvilles and MTES-MCT/partaj
+        uses: ./
+        with:
+          token: ${{ secrets.DEPENDABOTALERTS_TOKEN }}
+          repositories: MTES-MCT/action-bidonvilles,MTES-MCT/partaj
+          output: codescanalerts.json
+      - run: |
+          cat codescanalerts.json

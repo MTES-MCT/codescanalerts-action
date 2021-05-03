@@ -4,8 +4,8 @@ inputs:
   token: 
     description: 'Github repository token'
     required: true
-  repo: 
-    description: 'Github repository as owner/repo'
+  repositories: 
+    description: 'Github repositories e.g. "owner/repo1,owner/repo2"'
     required: true
   output:
     description: 'Path to output file. defaults to codescanalerts.json'

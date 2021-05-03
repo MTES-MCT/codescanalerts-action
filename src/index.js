@@ -5,13 +5,18 @@ const alerts = require("./alerts");
 
 async function run() {
   try {
-    const repo = core.getInput("repo");
+    const repositoriesString = core.getInput("repositories");
+    const repositories = repositoriesString.split(',');
+    core.info(`Repositories JSON as ${JSON.stringify(repositories)} ...`);
     const token = core.getInput("token");
     core.setSecret(token);
     const output = core.getInput("output");
-    core.info(`Fetching code scanning alerts from Github on ${repo} ...`);
-    const results = await alerts(repo, token);
-    fs.writeFileSync(output, JSON.stringify(results));
+    var allResults = [];
+    await Promise.all(repositories.map(async (repo) => {
+      var results = await alerts(repo, token);
+      allResults.push(results.data);
+    }));
+    fs.writeFileSync(output, JSON.stringify(allResults));
   } catch (error) {
     core.setFailed(error.message);
   }
