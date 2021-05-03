@@ -32,7 +32,7 @@ jobs:
       - name: on MTES-MCT/action-bidonvilles and MTES-MCT/partaj
         uses: ./
         with:
-          token: ${{ secrets.DEPENDABOTALERTS_TOKEN }}
+          token: ${{ secrets.CODESCANALERTS_TOKEN }}
           repositories: MTES-MCT/action-bidonvilles,MTES-MCT/partaj
           output: codescanalerts.json
       - run: |

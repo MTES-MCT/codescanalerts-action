@@ -15,14 +15,14 @@ jobs:
     steps:
       - uses: "MTES-MCT/codescanalerts-action@main"
         with:
-          token: ${{ secrets.DEPENDABOTALERTS_TOKEN }}
+          token: ${{ secrets.CODESCANALERTS_TOKEN }}
           repo: MTES-MCT/dashlord
           output: codescanalerts.json
 ```
 
 ## Hacking
 
-To test locally, install [act](https://github.com/nektos/act). Put secrets `DEPENDABOTALERTS_TOKEN=***` in `.secrets` file.
+To test locally, install [act](https://github.com/nektos/act). Put secrets `CODESCANALERTS_TOKEN=***` in `.secrets` file.
 Launch:
 
 ```shell
