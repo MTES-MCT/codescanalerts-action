@@ -37,10 +37,7 @@ jobs:
           output: codescanalerts.json
       - name: test output
         run: |
-          tool=$(echo $(cat codescanalerts.json | jq '.[] | length'))
-          if [[ "${#tool[@]}" -lt 1 ]]; then
-            exit 1
-          fi
-          if [[ ${tool[0]} < 1 ]]; then
+          tool=$(echo $(cat codescanalerts.json | jq '. | length'))
+          if [[ ! "${tool[@]}" == 2 ]]; then
             exit 1
           fi

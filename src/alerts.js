@@ -40,7 +40,7 @@ const alerts = (repoUrl, token) => {
     repo: getRepo(repoUrl)
   })
     .then(throwsNon200)
-    .then(response => response.data);
+    .then(response => { return { repository: { url: `https://github.com/${repoUrl}`, alerts: response.data } }; });
 };
 
 module.exports = alerts;
