@@ -33,7 +33,7 @@ const getRepo = (repoUrl) => {
  * @returns {Promise<HttpScanResult>}
  */
 const alerts = (repoUrl, token) => {
-  console.warn(`fetch Github code scanning alerts for ${repoUrl}`);
+  console.warn(`Fetch Github code scanning alerts for ${repoUrl}`);
   const octokit = new Octokit({ auth: token });
   return octokit.request('GET /repos/{owner}/{repo}/code-scanning/alerts', {
     owner: getOwner(repoUrl),
