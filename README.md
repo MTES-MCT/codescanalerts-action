@@ -6,7 +6,7 @@ Github action that fetches Github code-scanning alerts and report results as JSO
 
 ## Usage
 
-First, you need to store your repository read-only token in repo secrets as `CODESCANALERTS_TOKEN`.
+First, you need to store your repositories read-only token in repo secrets as `CODESCANALERTS_TOKEN`.
 
 ```yaml
 jobs:
@@ -16,7 +16,7 @@ jobs:
       - uses: "MTES-MCT/codescanalerts-action@main"
         with:
           token: ${{ secrets.CODESCANALERTS_TOKEN }}
-          repo: MTES-MCT/dashlord
+          repositories: MTES-MCT/action-bidonvilles,MTES-MCT/partaj
           output: codescanalerts.json
 ```
 
