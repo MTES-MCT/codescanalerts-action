@@ -2,7 +2,7 @@
 
 [![units-test](https://github.com/MTES-MCT/codescanalerts-action/actions/workflows/test.yml/badge.svg)](https://github.com/MTES-MCT/codescanalerts-action/actions/workflows/test.yml)
 
-Github action that fetches Github code-scanning alerts and report results as JSON.
+Github action that fetches [Github code-scanning alerts](https://docs.github.com/en/code-security/secure-coding/about-code-scanning) and report results as JSON.
 
 ## Usage
 
