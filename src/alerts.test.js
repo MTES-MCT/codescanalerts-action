@@ -128,7 +128,7 @@ describe("fetch alerts from a Github repository", () => {
       .reply(200, response.data);
 
     const results = await alerts("octocat/hello-world", "test-token");
-    expect(results).toEqual({ url: "https://github.com/octocat/hello-world", alerts: response.data });
+    expect(results).toEqual({ url: "https://github.com/octocat/hello-world", grade: "F", alerts: response.data });
   });
 
   test("should return error 403 forbidden", async () => {

@@ -3430,6 +3430,17 @@ const getRepo = (repoUrl) => {
 
 }
 
+const computeGrade = (alerts) => {
+  if (alerts) {
+    var grade = "A";
+    if (alerts.length > 0 && alerts.filter((alert) => alert.rule.severity === 'error').length > 0)
+      grade = "F";
+    else if (alerts.length > 0 && alerts.filter((alert) => alert.rule.severity === 'warning').length > 0)
+      grade = "D";
+  }
+  return grade;
+}
+
 /**
  * Returns alerts from Github code-scanning associated to a repo url
  *
@@ -3446,7 +3457,7 @@ const alerts = (repoUrl, token) => {
     repo: getRepo(repoUrl)
   })
     .then(throwsNon200)
-    .then(response => { return { url: `https://github.com/${repoUrl}`, alerts: response.data }; });
+    .then(response => { return { url: `https://github.com/${repoUrl}`, grade: computeGrade(response.data), alerts: response.data }; });
 };
 
 module.exports = alerts;
@@ -3569,6 +3580,38 @@ const core = __nccwpck_require__(186);
 
 const alerts = __nccwpck_require__(341);
 
+function maxGrade(gradesArray) {
+  const grades = new Map();
+  grades.set("F", 6);
+  grades.set("E", 5);
+  grades.set("D", 4);
+  grades.set("C", 3);
+  grades.set("B", 2);
+  grades.set("A", 1);
+  const orders = new Map();
+  orders.set(6, "F");
+  orders.set(5, "E");
+  orders.set(4, "D");
+  orders.set(3, "C");
+  orders.set(2, "B");
+  orders.set(1, "A");
+  return orders.get(Math.max(...gradesArray.map((grade) => grades.get(grade))));
+}
+
+function sumRepositoriesAlerts(repositories) {
+  var sum = {};
+  sum.totalCount = repositories
+    .filter(Boolean)
+    .map((repository) => repository.alerts.length)
+    .reduce((prev, curr) => prev + curr, 0);
+  const grades = repositories
+    .filter(Boolean)
+    .map((repository) => repository.grade);
+  sum.grade = maxGrade(grades);
+  sum.repositories = repositories;
+  return sum;
+}
+
 async function run() {
   try {
     const repositoriesString = core.getInput("repositories");
@@ -3577,12 +3620,12 @@ async function run() {
     const token = core.getInput("token");
     core.setSecret(token);
     const output = core.getInput("output");
-    var allResults = [];
+    var repositoriesResults = [];
     await Promise.all(repositories.map(async (repo) => {
       var results = await alerts(repo, token);
-      allResults.push(results);
+      repositoriesResults.push(results);
     }));
-    fs.writeFileSync(output, JSON.stringify(allResults));
+    fs.writeFileSync(output, JSON.stringify(sumRepositoriesAlerts(repositoriesResults)));
   } catch (error) {
     core.setFailed(error.message);
   }

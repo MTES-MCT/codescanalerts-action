@@ -24,6 +24,17 @@ const getRepo = (repoUrl) => {
 
 }
 
+const computeGrade = (alerts) => {
+  if (alerts) {
+    var grade = "A";
+    if (alerts.length > 0 && alerts.filter((alert) => alert.rule.severity === 'error').length > 0)
+      grade = "F";
+    else if (alerts.length > 0 && alerts.filter((alert) => alert.rule.severity === 'warning').length > 0)
+      grade = "D";
+  }
+  return grade;
+}
+
 /**
  * Returns alerts from Github code-scanning associated to a repo url
  *
@@ -40,7 +51,7 @@ const alerts = (repoUrl, token) => {
     repo: getRepo(repoUrl)
   })
     .then(throwsNon200)
-    .then(response => { return { url: `https://github.com/${repoUrl}`, alerts: response.data }; });
+    .then(response => { return { url: `https://github.com/${repoUrl}`, grade: computeGrade(response.data), alerts: response.data }; });
 };
 
 module.exports = alerts;
