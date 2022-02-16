@@ -48,7 +48,8 @@ const alerts = (repoUrl, token) => {
   const octokit = new Octokit({ auth: token });
   return octokit.request('GET /repos/{owner}/{repo}/code-scanning/alerts', {
     owner: getOwner(repoUrl),
-    repo: getRepo(repoUrl)
+    repo: getRepo(repoUrl),
+    state: "open"
   })
     .then(throwsNon200)
     .then(response => { return { url: `https://github.com/${repoUrl}`, grade: computeGrade(response.data), alerts: response.data }; });
