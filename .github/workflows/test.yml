@@ -35,6 +35,7 @@ jobs:
         with:
           token: ${{ secrets.CODESCANALERTS_TOKEN }}
           repositories: MTES-MCT/carbure,MTES-MCT/partaj
+          state: open
           output: codescanalerts.json
       - name: test output
         run: |

@@ -18,6 +18,7 @@ jobs:
           token: ${{ secrets.CODESCANALERTS_TOKEN }}
           repositories: MTES-MCT/action-bidonvilles,MTES-MCT/partaj
           output: codescanalerts.json
+          state: open
 ```
 
 ## Hacking
