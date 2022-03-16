@@ -125,9 +125,10 @@ describe("fetch alerts from a Github repository", () => {
       }
     })
       .get('/repos/octocat/hello-world/code-scanning/alerts')
+      .query({ state: 'open' })
       .reply(200, response.data);
 
-    const results = await alerts("octocat/hello-world", "test-token");
+    const results = await alerts("octocat/hello-world", "test-token", "open");
     expect(results).toEqual({ url: "https://github.com/octocat/hello-world", grade: "F", alerts: response.data });
   });
 
@@ -142,11 +143,12 @@ describe("fetch alerts from a Github repository", () => {
       }
     })
       .get('/repos/octocat/hello-world/code-scanning/alerts')
+      .query({ state: 'open' })
       .reply(403, {
         statusText: "Forbidden"
       });
 
-    await expect(alerts("octocat/hello-world", "wrong-token")).rejects.toThrow("Forbidden");
+    await expect(alerts("octocat/hello-world", "wrong-token", "open")).rejects.toThrow("Forbidden");
 
   });
   afterEach(() => {

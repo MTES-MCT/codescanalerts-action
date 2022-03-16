@@ -42,10 +42,11 @@ async function run() {
     core.info(`Repositories JSON as ${JSON.stringify(repositories)} ...`);
     const token = core.getInput("token");
     core.setSecret(token);
+    const state = core.getInput("state") == "" ?  "open" : core.getInput("state");
     const output = core.getInput("output");
     var repositoriesResults = [];
     await Promise.all(repositories.map(async (repo) => {
-      var results = await alerts(repo, token);
+      var results = await alerts(repo, token, state);
       repositoriesResults.push(results);
     }));
     fs.writeFileSync(output, JSON.stringify(sumRepositoriesAlerts(repositoriesResults)));
