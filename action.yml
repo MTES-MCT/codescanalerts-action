@@ -11,6 +11,10 @@ inputs:
     description: 'Path to output file. defaults to codescanalerts.json'
     default: 'codescanalerts.json'
     required: true
+  state:
+    description: 'Filtered by state'
+    default: "open"
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'

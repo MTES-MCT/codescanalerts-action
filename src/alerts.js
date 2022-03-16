@@ -40,15 +40,17 @@ const computeGrade = (alerts) => {
  *
  * @param {string} repoUrl The repository url as owner/repo
  * @param {string} token The token to authenticate to Github API
+ * @param {String} state The state to filter alerts
  *
  * @returns {Promise<HttpScanResult>}
  */
-const alerts = (repoUrl, token) => {
+const alerts = (repoUrl, token, state) => {
   console.warn(`Fetch Github code scanning alerts for ${repoUrl}`);
   const octokit = new Octokit({ auth: token });
   return octokit.request('GET /repos/{owner}/{repo}/code-scanning/alerts', {
     owner: getOwner(repoUrl),
-    repo: getRepo(repoUrl)
+    repo: getRepo(repoUrl),
+    state: state
   })
     .then(throwsNon200)
     .then(response => { return { url: `https://github.com/${repoUrl}`, grade: computeGrade(response.data), alerts: response.data }; });
